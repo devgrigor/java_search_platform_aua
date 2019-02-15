@@ -1,6 +1,9 @@
 ### Run the spring
 `./gradlew bootRun`
 
+### Spring documentation
+https://spring.io/guides/gs/rest-service/
+
 ### Requirements
 * java: version ~1.8.0_161
 * gradle ~5.1
