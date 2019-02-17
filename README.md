@@ -11,9 +11,14 @@ Search platform for a group project.
 8. Remove search results that contain bad words (In 4-th point remove if has a bad word)
 9. Another service for ads (can be included in 4-th point)
 
-Framework: Spring ?
-Caching: Redis
-DB: MySQL (Elastic search for fuzzy search ?)
-Front: React or Angular
-Tests: jUnit ?
-Manual API tests: Postman
+**Framework: Spring**
+
+**Caching: Redis**
+
+**DB: MySQL (Elastic search for fuzzy search ?)**
+
+**Front: React or Angular**
+
+**Tests: jUnit ?**
+
+**Manual API tests: Postman**
