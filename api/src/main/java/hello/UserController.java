@@ -25,4 +25,11 @@ public class UserController {
         
         return userRepository.findAll();
     }
+
+    // REST API
+    // GET: /users /can have filters
+    // GET: /users/{id}
+    // POST: /users /has data
+    // PUT: /users/{id} /has data
+    // DELETE: /users/{id}    
 }
