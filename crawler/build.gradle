@@ -1,0 +1,42 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://repo.boundlessgeo.com/main/"
+        }
+    }
+    dependencies {
+        
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+
+
+repositories    {
+    mavenCentral()
+    maven {
+        url "https://repo.boundlessgeo.com/main/"
+    }
+}
+
+task run(type: JavaExec) {
+  classpath sourceSets.main.runtimeClasspath
+  main = "crawler.BasicCrawlController"
+  args "result", 1
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+
+dependencies {
+    compile group: 'edu.uci.ics', name: 'crawler4j', version: '4.4.0'
+
+    // Use MySQL Connector-J
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.13'
+    
+    compile group: 'com.sleepycat', name: 'je', version: '5.0.84'
+}   
