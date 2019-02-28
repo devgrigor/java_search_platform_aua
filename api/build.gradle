@@ -34,5 +34,9 @@ dependencies {
     // Use MySQL Connector-J
     compile 'mysql:mysql-connector-java'
 
+    // Adding redis
+    compile("org.springframework.boot:spring-boot-starter-data-redis")
+
+
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
