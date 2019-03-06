@@ -47,7 +47,7 @@ public class BasicCrawler extends WebCrawler {
         }
 
         // Only accept the url if it is in the "www.ics.uci.edu" domain and protocol is "http".
-        return href.startsWith("https://www.ics.uci.edu/");
+        return href.startsWith("https://www.list.am/item");
     }
 
     /**
@@ -72,15 +72,20 @@ public class BasicCrawler extends WebCrawler {
         logger.debug("Parent page: {}", parentUrl);
         logger.debug("Anchor text: {}", anchor);
 
+        // TODO: fix the fonts from the incoming data
         if (page.getParseData() instanceof HtmlParseData) {
             HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
             String text = htmlParseData.getText();
             String html = htmlParseData.getHtml();
+            String title = htmlParseData.getTitle();
             Set<WebURL> links = htmlParseData.getOutgoingUrls();
 
             logger.debug("Text length: {}", text.length());
             logger.debug("Html length: {}", html.length());
             logger.debug("Number of outgoing links: {}", links.size());
+            // TODO: put title and url into the database
+            // TODO: find a way to add meta description if any exists
+            logger.debug("Title is " + title);
         }
 
         Header[] responseHeaders = page.getFetchResponseHeaders();
