@@ -18,6 +18,7 @@
 package crawler;
 
 import java.util.Set;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.apache.http.Header;
@@ -78,14 +79,16 @@ public class BasicCrawler extends WebCrawler {
             String text = htmlParseData.getText();
             String html = htmlParseData.getHtml();
             String title = htmlParseData.getTitle();
+            String description = htmlParseData.getMetaTagValue("description");
             Set<WebURL> links = htmlParseData.getOutgoingUrls();
 
             logger.debug("Text length: {}", text.length());
             logger.debug("Html length: {}", html.length());
             logger.debug("Number of outgoing links: {}", links.size());
-            // TODO: put title and url into the database
-            // TODO: find a way to add meta description if any exists
+            // TODO: put title, description and url into the database
             logger.debug("Title is " + title);
+            logger.debug("description is " + description);
+            // TODO: consider a case where there is no description
         }
 
         Header[] responseHeaders = page.getFetchResponseHeaders();
@@ -96,6 +99,6 @@ public class BasicCrawler extends WebCrawler {
             }
         }
 
-        logger.debug("=============");
+        logger.debug("=====================================================");
     }
 }
