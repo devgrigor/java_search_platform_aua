@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import logo from './logo.png';
 import './App.css';
+import Header from './page-parts/Header';
+import MainSearch from './page-parts/MainSearch';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-        	<p>GALA Seatch is still in development</p>
-			<img src={logo} className="App-logo" alt="logo" />
-          
-        </header>
+        <Header logo={logo}></Header>
+        <MainSearch></MainSearch>
       </div>
     );
   }
