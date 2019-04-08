@@ -5,10 +5,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
-import org.springframework.data.redis.core.RedisHash;
+//import org.springframework.data.redis.core.RedisHash;
 
 
-@RedisHash("User") // This tells redis that the user is cachable
+//@RedisHash("User") // This tells redis that the user is cachable
 @Entity // This tells Hibernate to make a table out of this class
 public class User implements Serializable {
     @Id
