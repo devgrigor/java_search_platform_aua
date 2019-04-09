@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import java.util.Collection;
 
 
 
@@ -32,7 +33,18 @@ public class SearchRecordController {
 
     @PostMapping("/search-records")
     SearchRecord postSearchRecord(@RequestBody SearchRecord postSearchRecord){
-        // TODO: if record exists increment popularity and update, if not create record withpopularity 1
+
+        Collection<SearchRecord> records = searchRecordRepository.findByKeyword(postSearchRecord.getKeyword());
+
+        if(records.size()>0){
+            System.out.println("keyword exists");
+        }
+        else{
+            System.out.println("keyword does not exist");
+        }
+    
+     // TODO: if record exists increment popularity and update, if not create record withpopularity 1
+
         return searchRecordRepository.save(postSearchRecord);
     }
 
