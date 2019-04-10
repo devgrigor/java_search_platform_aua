@@ -28,11 +28,14 @@ import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
 
-/**
- * @author Yasser Ganjisaffar
- */
-public class BasicCrawler extends WebCrawler {
 
+import hello.Metadata;
+import hello.MetadataRepository;
+
+
+public class BasicCrawler extends WebCrawler {
+    // TODO: make sure that repository is created correctly
+    private MetadataRepository metadataRepository;
     private static final Pattern IMAGE_EXTENSIONS = Pattern.compile(".*\\.(bmp|gif|jpg|png)$");
 
     /**
@@ -64,7 +67,7 @@ public class BasicCrawler extends WebCrawler {
         String subDomain = page.getWebURL().getSubDomain();
         String parentUrl = page.getWebURL().getParentUrl();
         String anchor = page.getWebURL().getAnchor();
-
+/*
         logger.debug("Docid: {}", docid);
         logger.info("URL: {}", url);
         logger.debug("Domain: '{}'", domain);
@@ -72,7 +75,7 @@ public class BasicCrawler extends WebCrawler {
         logger.debug("Path: '{}'", path);
         logger.debug("Parent page: {}", parentUrl);
         logger.debug("Anchor text: {}", anchor);
-
+*/
         // TODO: fix the fonts from the incoming data
         if (page.getParseData() instanceof HtmlParseData) {
             HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
@@ -81,21 +84,33 @@ public class BasicCrawler extends WebCrawler {
             String title = htmlParseData.getTitle();
             String description = htmlParseData.getMetaTagValue("description");
             Set<WebURL> links = htmlParseData.getOutgoingUrls();
-
+/*
             logger.debug("Text length: {}", text.length());
             logger.debug("Html length: {}", html.length());
             logger.debug("Number of outgoing links: {}", links.size());
             // TODO: put title, description and url into the database
+*/
             logger.debug("Title is " + title);
+
             logger.debug("description is " + description);
-            // TODO: consider a case where there is no description
+
+            logger.info("URL: {}", url);
+
+            Metadata md = new Metadata(title, description, url);
+            metadataRepository.save(md);
+
+
+
+            // TODO: if the url exists then update it
+            // TODO: consider a case where there is no description okay
+
         }
 
         Header[] responseHeaders = page.getFetchResponseHeaders();
         if (responseHeaders != null) {
-            logger.debug("Response headers:");
+            //logger.debug("Response headers:");
             for (Header header : responseHeaders) {
-                logger.debug("\t{}: {}", header.getName(), header.getValue());
+               // logger.debug("\t{}: {}", header.getName(), header.getValue());
             }
         }
 

@@ -26,6 +26,7 @@ import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 
+
 /**
  * @author Yasser Ganjisaffar
  */
@@ -119,7 +120,7 @@ public class BasicCrawlController {
      * URLs that are fetched and then the crawler starts following links
      * which are found in these pages
      */
-        controller.addSeed("https://www.list.am/item/10718208");
+        controller.addSeed("https://www.list.am/item/8787958");
 
     /*
      * Start the crawl. This is a blocking operation, meaning that your code
