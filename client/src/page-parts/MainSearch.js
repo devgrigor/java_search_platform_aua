@@ -10,7 +10,20 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Icon from '@material-ui/core/Icon';
 import './MainSearch.css';
 
-
+fetch('http://localhost:8080/search-records', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    // 'Content-Type': 'application/x-www-form-urlencoded',
+  },
+  body: JSON.stringify({
+    keyword: 'something'
+  })
+}).then(res => {
+  return res.json();
+}).then(res => {
+  console.log(res);
+})
 const suggestions = [
   { label: 'Afghanistan' },
   { label: 'Aland Islands' },
