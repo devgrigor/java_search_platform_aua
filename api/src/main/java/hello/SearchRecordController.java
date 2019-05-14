@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.Collection;
 
 
-
 import hello.SearchRecord;
 import hello.SearchRecordRepository;
 

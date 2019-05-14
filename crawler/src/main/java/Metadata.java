@@ -8,14 +8,13 @@ import java.io.Serializable;
 import org.springframework.data.redis.core.RedisHash;
 
 
-@RedisHash("Metadata") // This tells redis that the user is cachable
 @Entity // This tells Hibernate to make a table out of this class
 
 
-public class Metadata implements Serializable {
+public class Metadata {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Integer id;
+    private int id;
 
     private String title;
 

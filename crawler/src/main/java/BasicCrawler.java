@@ -19,6 +19,7 @@ package crawler;
 
 import java.util.Set;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import org.apache.http.Header;
@@ -27,14 +28,27 @@ import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Controller;
 
+import org.hibernate.HibernateException; 
+import org.hibernate.Session; 
+import org.hibernate.Transaction;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
 import hello.Metadata;
 import hello.MetadataRepository;
 
 
+
+@Service
 public class BasicCrawler extends WebCrawler {
+
+    private static SessionFactory factory; 
     // TODO: make sure that repository is created correctly
+    @Autowired
     private MetadataRepository metadataRepository;
     private static final Pattern IMAGE_EXTENSIONS = Pattern.compile(".*\\.(bmp|gif|jpg|png)$");
 
@@ -58,6 +72,9 @@ public class BasicCrawler extends WebCrawler {
      * This function is called when a page is fetched and ready to be processed
      * by your program.
      */
+
+
+
     @Override
     public void visit(Page page) {
         int docid = page.getWebURL().getDocid();
@@ -96,10 +113,35 @@ public class BasicCrawler extends WebCrawler {
 
             logger.info("URL: {}", url);
 
-            Metadata md = new Metadata(title, description, url);
-            metadataRepository.save(md);
+           // Metadata md = new Metadata(title, description, url);
+            
+            //this.metadataRepository.save(md);
+
+        try {
+         factory = new Configuration().configure().buildSessionFactory();
+      } catch (Throwable ex) { 
+         System.err.println("Failed to create sessionFactory object." + ex);
+         throw new ExceptionInInitializerError(ex); 
+      }
 
 
+        
+        Session session = factory.openSession();
+        Transaction tx = null;
+        Integer mdID = null;
+        
+        try {
+           tx = session.beginTransaction();
+           Metadata md = new Metadata(title, description, url);
+           mdID = (Integer) session.save(md); 
+           tx.commit();
+        } catch (HibernateException e) {
+           if (tx!=null) tx.rollback(); 
+           e.printStackTrace(); 
+        } finally {
+           session.close(); 
+        }
+    
 
             // TODO: if the url exists then update it
             // TODO: consider a case where there is no description okay

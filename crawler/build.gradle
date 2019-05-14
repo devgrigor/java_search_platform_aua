@@ -43,6 +43,8 @@ dependencies {
 
     compile("org.springframework.boot:spring-boot-starter-web")
 
+    compile("org.hibernate:hibernate-core:5.4.2.Final")
+
     // Use MySQL Connector-J
     compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.13'
     
