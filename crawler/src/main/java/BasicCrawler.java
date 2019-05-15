@@ -32,25 +32,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.stereotype.Controller;
 
-import org.hibernate.HibernateException; 
-import org.hibernate.Session; 
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import hello.Metadata;
-import hello.MetadataRepository;
+import javax.persistence.PersistenceContext;
+import java.sql.*;
 
+import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 
 @Service
 public class BasicCrawler extends WebCrawler {
 
-    private static SessionFactory factory; 
-    // TODO: make sure that repository is created correctly
-    @Autowired
-    private MetadataRepository metadataRepository;
+    private static SessionFactory factory;
     private static final Pattern IMAGE_EXTENSIONS = Pattern.compile(".*\\.(bmp|gif|jpg|png)$");
+
+    @PersistenceContext
+    EntityManager entityManager;
 
     /**
      * You should implement this function to specify whether the given url
@@ -84,16 +91,13 @@ public class BasicCrawler extends WebCrawler {
         String subDomain = page.getWebURL().getSubDomain();
         String parentUrl = page.getWebURL().getParentUrl();
         String anchor = page.getWebURL().getAnchor();
-/*
-        logger.debug("Docid: {}", docid);
-        logger.info("URL: {}", url);
-        logger.debug("Domain: '{}'", domain);
-        logger.debug("Sub-domain: '{}'", subDomain);
-        logger.debug("Path: '{}'", path);
-        logger.debug("Parent page: {}", parentUrl);
-        logger.debug("Anchor text: {}", anchor);
-*/
-        // TODO: fix the fonts from the incoming data
+        
+        MysqlDataSource dataSource = new MysqlDataSource();
+        dataSource.setUser("root");
+        dataSource.setPassword("");
+        dataSource.setServerName("localhost");
+        dataSource.setDatabaseName("search_engine");
+        
         if (page.getParseData() instanceof HtmlParseData) {
             HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
             String text = htmlParseData.getText();
@@ -101,59 +105,31 @@ public class BasicCrawler extends WebCrawler {
             String title = htmlParseData.getTitle();
             String description = htmlParseData.getMetaTagValue("description");
             Set<WebURL> links = htmlParseData.getOutgoingUrls();
-/*
-            logger.debug("Text length: {}", text.length());
-            logger.debug("Html length: {}", html.length());
-            logger.debug("Number of outgoing links: {}", links.size());
-            // TODO: put title, description and url into the database
-*/
+
             logger.debug("Title is " + title);
 
             logger.debug("description is " + description);
 
             logger.info("URL: {}", url);
+            try {
+                Connection conn = dataSource.getConnection();
+                Statement stmt = conn.createStatement();
+                String str = "Insert into meta_data (title, description, url) values ('" + title + "',  '" + description + "',  '" + url + "')";
+                System.out.println(str);
+                int rs = stmt.executeUpdate(str);
 
-           // Metadata md = new Metadata(title, description, url);
-            
-            //this.metadataRepository.save(md);
-
-        try {
-         factory = new Configuration().configure().buildSessionFactory();
-      } catch (Throwable ex) { 
-         System.err.println("Failed to create sessionFactory object." + ex);
-         throw new ExceptionInInitializerError(ex); 
-      }
-
-
-        
-        Session session = factory.openSession();
-        Transaction tx = null;
-        Integer mdID = null;
-        
-        try {
-           tx = session.beginTransaction();
-           Metadata md = new Metadata(title, description, url);
-           mdID = (Integer) session.save(md); 
-           tx.commit();
-        } catch (HibernateException e) {
-           if (tx!=null) tx.rollback(); 
-           e.printStackTrace(); 
-        } finally {
-           session.close(); 
-        }
+                
+                stmt.close();
+                conn.close();
+            } catch(Exception e) {
+                System.out.println("===============Ecteption==============");
+                System.out.println(e);
+            }
     
 
             // TODO: if the url exists then update it
             // TODO: consider a case where there is no description okay
 
-        }
-
-        Header[] responseHeaders = page.getFetchResponseHeaders();
-        if (responseHeaders != null) {
-            //logger.debug("Response headers:");
-            for (Header header : responseHeaders) {
-               // logger.debug("\t{}: {}", header.getName(), header.getValue());
-            }
         }
 
         logger.debug("=====================================================");

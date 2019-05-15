@@ -42,9 +42,11 @@ public class SearchRecordController {
         }
         else{
             System.out.println("keyword does not exist");
+            return searchRecordRepository.save(postSearchRecord);
         }
 
-        return searchRecordRepository.save(postSearchRecord);
+        SearchRecord res = new SearchRecord();
+        return res;
     }
 
 

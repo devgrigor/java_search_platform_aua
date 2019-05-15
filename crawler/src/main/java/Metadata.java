@@ -1,5 +1,6 @@
-package hello;
+package crawler;
 
+import javax.persistence.Table;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,7 +10,7 @@ import org.springframework.data.redis.core.RedisHash;
 
 
 @Entity // This tells Hibernate to make a table out of this class
-
+@Table(name = "meta_data")
 
 public class Metadata {
     @Id

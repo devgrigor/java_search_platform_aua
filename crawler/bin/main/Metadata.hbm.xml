@@ -4,7 +4,7 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
 
 <hibernate-mapping>
-   <class name = "hello.Metadata" table = "METADATA">
+   <class name = "crawler.Metadata" table = "meta_data">
       
       <meta attribute = "class-description">
          This class contains the metadata 
